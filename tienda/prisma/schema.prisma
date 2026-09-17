@@ -1,0 +1,72 @@
+// Esquema simplificado para tienda de emprendimiento.
+// Ejecuta: npx prisma migrate dev --name init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum OrderStatus {
+  PENDIENTE
+  PAGADO
+  PREPARANDO
+  ENVIADO
+  ENTREGADO
+  CANCELADO
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String
+  price       Decimal  @db.Decimal(12, 2)
+  compareAtPrice Decimal? @db.Decimal(12, 2)
+  category    String   // texto libre: "ropa", "accesorios", etc. Así se pueden agregar categorías nuevas sin migrar la BD.
+  images      String[] // URLs de imágenes (Cloudinary/Vercel Blob), en orden
+  sizes       String[] // ej: ["S","M","L"] — vacío si no aplica
+  colors      String[] // ej: ["Negro","Blanco"] — vacío si no aplica
+  stock       Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  orderItems  OrderItem[]
+}
+
+model Order {
+  id            String      @id @default(cuid())
+  customerName  String
+  customerEmail String
+  customerPhone String
+  address       String
+  city          String
+  department    String
+  notes         String?
+  subtotal      Decimal     @db.Decimal(12, 2)
+  shipping      Decimal     @db.Decimal(12, 2) @default(0)
+  total         Decimal     @db.Decimal(12, 2)
+  status        OrderStatus @default(PENDIENTE)
+  paymentRef    String?     // referencia de transacción de Wompi
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  items         OrderItem[]
+}
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+  name      String  // se copia al momento de la compra por si el producto cambia después
+  size      String?
+  color     String?
+  quantity  Int
+  unitPrice Decimal @db.Decimal(12, 2)
+}

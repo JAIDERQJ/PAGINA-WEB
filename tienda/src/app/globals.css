@@ -1,0 +1,106 @@
+@import "tailwindcss";
+
+:root {
+  /* 🎮 Fondo principal — azul noche arcade */
+  --bg: #061426;
+
+  /* Texto principal — casi blanco */
+  --ink: #F2F6F7;
+
+  /* Bordes — azul profundo */
+  --line: #075A86;
+
+  /* 🟠 Naranja arcade */
+  --rust: #FF6A1A;
+
+  /* 🟡 Amarillo / naranja para acciones */
+  --mustard: #FFB52E;
+
+  /* 🔵 Azul eléctrico */
+  --avocado: #0B8CC7;
+
+  /* Blanco cálido para tarjetas */
+  --cream: #F4F1E6;
+
+  /* Texto secundario */
+  --muted: #7FA4B8;
+
+  /* 🔴 Error */
+  --danger: #FF4538;
+
+  /* 🟤 Naranja oscuro */
+  --ember: #B83E12;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-ink: var(--ink);
+  --color-line: var(--line);
+  --color-rust: var(--rust);
+  --color-mustard: var(--mustard);
+  --color-avocado: var(--avocado);
+  --color-cream: var(--cream);
+  --color-muted: var(--muted);
+  --color-danger: var(--danger);
+  --color-ember: var(--ember);
+
+  /* Azul arcade */
+  --color-moss: var(--avocado);
+  --color-moss-soft: #DDF6FF;
+
+  --font-display: var(--font-manrope);
+  --font-sans: var(--font-manrope);
+}
+
+* {
+  border-color: var(--line);
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+}
+
+h1, h2, h3 {
+  font-family: var(--font-pixel), "VT323", monospace;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.4;
+}
+
+button, select {
+  font-family: var(--font-pixel), "VT323", monospace;
+  letter-spacing: 0;
+}
+
+.font-pixel-ui {
+  font-family: var(--font-pixel), "VT323", monospace;
+  letter-spacing: 0;
+}
+
+::selection {
+  background: var(--rust);
+  color: var(--cream);
+}
+
+a {
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 3px solid var(--mustard);
+  outline-offset: 2px;
+}
+
+.shadow-card {
+  box-shadow:
+    rgba(0, 0, 0, 0.45) 0px 7px 7px 0px,
+    rgba(0, 90, 134, 0.18) 0px 2px 4px 0px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
